@@ -1,6 +1,6 @@
 interface ICommandModule {
   commandName: string;
-  default: (params?: string, options?: string) => string;
+  default: (params?: string[], options?: string) => string;
 }
 
 const commandFiles = import.meta.glob('./**/index.ts', { eager: true });

@@ -11,7 +11,7 @@
     iptRef.value!.focus();
   });
 
-  const handleKeydown = (e: KeyboardEvent) => {
+  const handleKeyup = (e: KeyboardEvent) => {
     if (pressBoradEventMap[e.keyCode]) {
       e.preventDefault();
       pressBoradEventMap[e.keyCode]();
@@ -19,6 +19,7 @@
   };
 
   let firstPressArrow = true; // 是否第一次按上箭头
+  let cacheCommmand = ref<string>(''); // 缓存未执行的命令
   const pressBoradEventMap: Record<number, (...args: any[]) => any> = {
     // 回车
     13: function () {
@@ -46,9 +47,14 @@
 
     // 下箭头
     40: function () {
-      firstPressArrow = false;
-      setCurrentCommandIdx(currentCommandIdx + 1);
-      iptVal.value = commandedStack[currentCommandIdx];
+      if (currentCommandIdx === commandedStack.length - 1) {
+        iptVal.value = '';
+        firstPressArrow = true;
+      } else {
+        firstPressArrow = false;
+        setCurrentCommandIdx(currentCommandIdx + 1);
+        iptVal.value = commandedStack[currentCommandIdx];
+      }
     },
   };
 </script>
@@ -64,7 +70,7 @@
         ref="iptRef"
         v-model="iptVal"
         v-if="!answerIsVisible"
-        @keydown="handleKeydown"
+        @keyup="handleKeyup"
       />
       <span v-else class="terminal-item-prompt">{{ iptVal }}</span>
     </div>

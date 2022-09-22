@@ -2,7 +2,7 @@ import commandMap from './command/commandMap';
 
 export interface ICommand {
   func: string; // 命令
-  params?: string; // 命令参数
+  params?: string[]; // 命令参数
   options?: string; // 命令配置项
 }
 
@@ -25,11 +25,10 @@ const commandExecutor = (text: string): string => {
 
 function parsePrompt(text: string): ICommand {
   const content: string[] = text.split(' ').filter((item) => item);
-
   return {
     func: content[0],
-    params: content[1],
-    options: content[2],
+    params: content.slice(1, content.length - 1) || '',
+    options: content[content.length - 1] || '',
   };
 }
 
