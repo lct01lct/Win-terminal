@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { showNext } from './terminal';
+  import { showNext, commandedStack, currentCommandIdx, setCurrentCommandIdx } from './terminal';
   import commandExecutor from './core/commandExecutor';
 
   const iptRef = ref<HTMLElement | null>(null);
@@ -9,15 +9,48 @@
 
   onMounted(() => {
     iptRef.value!.focus();
-    iptRef.value!.addEventListener('keydown', function (e: KeyboardEvent) {
-      if (e.keyCode === 13) {
-        answerIsVisible.value = true;
-        answer.value = commandExecutor(iptVal.value);
-        this.blur();
-        showNext({ iptVal: iptVal.value, optVal: answer.value });
-      }
-    });
   });
+
+  const handleKeydown = (e: KeyboardEvent) => {
+    if (pressBoradEventMap[e.keyCode]) {
+      e.preventDefault();
+      pressBoradEventMap[e.keyCode]();
+    }
+  };
+
+  let firstPressArrow = true; // 是否第一次按上箭头
+  const pressBoradEventMap: Record<number, (...args: any[]) => any> = {
+    // 回车
+    13: function () {
+      // 执行命令
+      answerIsVisible.value = true;
+      answer.value = commandExecutor(iptVal.value);
+      iptRef.value!.blur();
+      showNext({ iptVal: iptVal.value, optVal: answer.value });
+
+      // 更新命令栈
+      iptVal.value && commandedStack.push(iptVal.value);
+      setCurrentCommandIdx(commandedStack.length - 1);
+    },
+
+    // 上箭头
+    38: function () {
+      if (firstPressArrow) {
+        iptVal.value = commandedStack[currentCommandIdx];
+        firstPressArrow = false;
+      } else {
+        setCurrentCommandIdx(currentCommandIdx - 1);
+        iptVal.value = commandedStack[currentCommandIdx];
+      }
+    },
+
+    // 下箭头
+    40: function () {
+      firstPressArrow = false;
+      setCurrentCommandIdx(currentCommandIdx + 1);
+      iptVal.value = commandedStack[currentCommandIdx];
+    },
+  };
 </script>
 
 <template>
@@ -31,6 +64,7 @@
         ref="iptRef"
         v-model="iptVal"
         v-if="!answerIsVisible"
+        @keydown="handleKeydown"
       />
       <span v-else class="terminal-item-prompt">{{ iptVal }}</span>
     </div>
