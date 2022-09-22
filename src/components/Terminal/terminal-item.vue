@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { showNext } from './terminal';
+  import commandExecutor from './core/commandExecutor';
 
   const iptRef = ref<HTMLElement | null>(null);
   const answerIsVisible = ref<boolean>(false);
@@ -11,7 +12,7 @@
     iptRef.value!.addEventListener('keydown', function (e: KeyboardEvent) {
       if (e.keyCode === 13) {
         answerIsVisible.value = true;
-        answer.value = '找不到命令';
+        answer.value = commandExecutor(iptVal.value);
         this.blur();
         showNext({ iptVal: iptVal.value, optVal: answer.value });
       }
