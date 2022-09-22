@@ -1,11 +1,10 @@
 <script setup lang="ts">
-  import test from '@/components/test.vue';
+  import Terminal from '@/components/Terminal/index.vue';
 </script>
 
 <template>
   <div>
-    222
-    <test></test>
+    <Terminal></Terminal>
   </div>
 </template>
 

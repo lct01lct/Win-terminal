@@ -8,7 +8,9 @@ export default defineConfig({
   plugins: [
     vue(),
     AutoImport({
-      imports: ['vue'], eslintrc: {
+      imports: ['vue'],
+      dts: true,
+      eslintrc: {
         enabled: false,
         filepath: './.eslintrc-auto-import.json',
         globalsPropValue: true,
@@ -20,5 +22,7 @@ export default defineConfig({
     alias: {
       '@': path.resolve(__dirname, 'src'),
     },
+
+    extensions: ['.ts']
   }
 })
