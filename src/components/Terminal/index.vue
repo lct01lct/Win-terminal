@@ -23,13 +23,12 @@
 
 <style scoped lang="scss">
   .terminal-wrapper {
+    overflow: auto;
     width: 1500px;
     height: 700px;
     background-color: #000;
 
     .terminal-container {
-      overflow-y: auto;
-      height: 1000px;
       width: 100%;
       color: white;
       font-weight: 100;
