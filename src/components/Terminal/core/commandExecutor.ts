@@ -7,7 +7,7 @@ export interface ICommand {
 }
 
 const commandExecutor = (text: string = ''): string => {
-  text = text.trim();
+  text = text.trim().toLowerCase();
 
   if (!text) {
     return '';
