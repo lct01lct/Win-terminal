@@ -19,7 +19,6 @@
   };
 
   let firstPressArrow = true; // 是否第一次按上箭头
-  let cacheCommmand = ref<string>(''); // 缓存未执行的命令
   const pressBoradEventMap: Record<number, (...args: any[]) => any> = {
     // 回车
     13: function () {
@@ -37,7 +36,7 @@
     // 上箭头
     38: function () {
       if (firstPressArrow) {
-        iptVal.value = commandedStack[currentCommandIdx];
+        iptVal.value = commandedStack[currentCommandIdx] || '';
         firstPressArrow = false;
       } else {
         setCurrentCommandIdx(currentCommandIdx - 1);

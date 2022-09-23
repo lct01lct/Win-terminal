@@ -6,7 +6,7 @@ export interface ICommand {
   options?: string; // 命令配置项
 }
 
-const commandExecutor = (text: string): string => {
+const commandExecutor = (text: string = ''): string => {
   text = text.trim();
 
   if (!text) {

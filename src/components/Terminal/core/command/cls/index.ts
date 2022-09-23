@@ -1,4 +1,5 @@
 import { ICommand } from '../../commandExecutor';
+import { ios } from '../../../terminal';
 
 /**
  * rd 删除文件夹命令

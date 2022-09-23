@@ -30,6 +30,7 @@
 
     .terminal-container {
       width: 100%;
+      height: 1400px;
       color: white;
       font-weight: 100;
       font-family: 'FZXiDengXian-Z06S';
