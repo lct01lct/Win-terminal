@@ -1,6 +1,9 @@
 <script setup lang="ts">
   import { showNext, commandedStack, currentCommandIdx, setCurrentCommandIdx } from './terminal';
   import commandExecutor from './core/commandExecutor';
+  import useTerminalStore from './store/use-terminal-store';
+
+  const terminalStore = useTerminalStore();
 
   const iptRef = ref<HTMLElement | null>(null);
   const answerIsVisible = ref<boolean>(false);
@@ -26,11 +29,20 @@
       answerIsVisible.value = true;
       answer.value = commandExecutor(iptVal.value);
       iptRef.value!.blur();
-      showNext({ iptVal: iptVal.value, optVal: answer.value });
 
       // 更新命令栈
       iptVal.value && commandedStack.push(iptVal.value);
       setCurrentCommandIdx(commandedStack.length - 1);
+
+      const baseHeigit = terminalStore.ioHeight;
+      console.log(iptVal.value, answer.value);
+      terminalStore.terminalContainerHeight =
+        terminalStore.terminalContainerHeight +
+        baseHeigit * ((answer.value ? 1 : 0) + 1) +
+        terminalStore.marginHeight;
+
+      // 显示一下 io
+      showNext({ iptVal: iptVal.value, optVal: answer.value });
     },
 
     // 上箭头

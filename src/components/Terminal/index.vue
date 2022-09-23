@@ -2,6 +2,10 @@
   import TerminalDefault from './terminal-default.vue';
   import TerminalItem from './terminal-item.vue';
   import { ios } from './terminal';
+  import useTerminalStore from './store/use-terminal-store';
+
+  const terminalStore = useTerminalStore();
+  const terminalContainerHeight = computed(() => terminalStore.terminalContainerHeight);
 
   onMounted(() => {
     const oTerminal: HTMLElement = document.querySelector('.terminal-container')!;
@@ -14,7 +18,7 @@
 
 <template>
   <div class="terminal-wrapper">
-    <div class="terminal-container">
+    <div class="terminal-container" :style="`height: ${terminalContainerHeight}px`">
       <TerminalDefault></TerminalDefault>
       <TerminalItem v-for="(item, index) in ios" :key="index"></TerminalItem>
     </div>
@@ -30,7 +34,7 @@
 
     .terminal-container {
       width: 100%;
-      height: 1400px;
+      // height: 1400px;
       color: white;
       font-weight: 100;
       font-family: 'FZXiDengXian-Z06S';
