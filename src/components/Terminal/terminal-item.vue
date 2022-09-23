@@ -35,7 +35,8 @@
       setCurrentCommandIdx(commandedStack.length - 1);
 
       const baseHeigit = terminalStore.ioHeight;
-      console.log(iptVal.value, answer.value);
+
+      // 修改终端容器的高度
       terminalStore.terminalContainerHeight =
         terminalStore.terminalContainerHeight +
         baseHeigit * ((answer.value ? 1 : 0) + 1) +
